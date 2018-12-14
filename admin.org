@@ -1,0 +1,3 @@
+* Magit installation
+  Date: <2018-12-15 Сб>
+  
