@@ -1,7 +1,7 @@
 * Magit installation
 Date: <2018-12-15 Сб>
 Use Emacs package manager for installation.
-Add in .emacs:
+Add to .emacs:
 
 (require 'package)
 (add-to-list 'package-archives
@@ -14,3 +14,7 @@ M-x package-refresh-contents RET
 Once you have done that, you can install Magit and its dependencies using:
 
 M-x package-install RET magit RET
+
+Add to .emacs.d/init.el:
+
+(set-file-modes (expand-file-name "~/.emacs.d/server") #o700)
