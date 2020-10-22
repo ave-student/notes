@@ -1,0 +1,82 @@
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+@@n Пид регулятор
+@@t pid пид регулятор regulator
+@@d 26.09.2016
+
+▼▼▼▼▼
+enum PIDstep {ReceivingE, ComputeP, ComputeI, ComputeD, MakeAction};    // тип данных «итерация вычислений»
+
+struct Timer {...};     // структура для часов реального времени
+struct difTimer {...};  // структура для разницы времени
+
+void PIDregulating (void)
+{
+	static char is_first_call = 1;
+	static float U, I, Kp, Ki, Kd, E, Eprev;
+	static PIDstep PID_step;
+	static struct Timer next_measuring, next_action;
+	static struct difTimer next_PID_step;
+
+	// . инициализация
+	if (is_first_call)
+	{
+		is_first_call = 0;
+		I = 0;
+		Eprev = 0;
+		PID_step = ReceivingE;
+		// ... инициализация коэффициентов Kp, Ki, Kd
+		SetCurrentTime (&next_measuring);
+		SetCurrentTime (&next_action);
+		// ... задание смещения next_PID_step
+	}
+
+	switch (PID_step)
+	{
+		case ReceivingE:   // получение текущей ошибки
+			if (TimeIsLower (&next_measuring))
+				break;         // время для измерения не подошло
+			AddTime (&next_measuring, &next_PID_step);
+			E = ReceivingE ();
+			U = 0;
+
+		case ComputeI:    // вычисление интегрального коэф.
+			PID_step = ComputeP;
+			if (Ki)
+			{
+				U = I + Ki * E;
+				I = U;
+				break;
+			}
+
+		case ComputeP:    // вычисление пропорционального коэф.
+			PID_step = ComputeD;
+			if (Kp)
+			{
+				U += Kp * E;
+				break;
+			}
+
+		case ComputeD:    // вычисление дифференциального коэф.
+			PID_step = MakeAction;
+			if (Kd)
+			{
+				U += Kd * (E - Eprev);
+				Eprev = E;
+				break;
+			}
+
+		case MakeAction:  // воздействие
+			CheckU (&U);    // проверка корректности U
+			if (TimeIsLower (&next_action))
+				break;         // время для воздействия не подошло
+			AddTime (&next_action, &next_PID_step);
+			MakeAction (U); // воздействие U
+			PID_step = ReceivingE;
+			break;
+	}
+}
+
+▲▲▲▲▲
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
