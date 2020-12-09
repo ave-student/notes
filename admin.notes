@@ -1655,3 +1655,16 @@ $ git clone https://aur.archlinux.org/package.git
 $ cd package
 
 $ makepkg -sri
+
+@@n Использование imagemagick для редактирования pdf
+@@t pdf pdftojpg jpg image imagemagick
+@@d 02.12.2020
+
+Разбить pdf на изображения постранично:
+$ convert -density 150 name.pdf name.jpg
+
+Повернуть изображения на 90 градусов по часовой стрелке:
+$ convert -rotate 90 *.jpg
+
+Разделить изображение на 2 части по горизонтали и 1 по вертикали
+$ convert -crop 2x1@ +repage +adjoin *.jpg

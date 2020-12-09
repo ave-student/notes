@@ -122,3 +122,10 @@ samolit.com
 pda.litres.ru
 gutenberg.org
 litmir.me
+
+@@n Заметки в sqlite
+@@t db database sqlite notes
+@@d 10.11.202
+
+Использовать sqlite для хранения заметок.
+Написать интерфейс к БД на nodejs.
