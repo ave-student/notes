@@ -1660,8 +1660,15 @@ $ makepkg -sri
 @@t pdf pdftojpg jpg image imagemagick
 @@d 02.12.2020
 
+Для работы с *.pdf необходимо установить ghostscript.
+
 Разбить pdf на изображения постранично:
 $ convert -density 150 name.pdf name.jpg
+
+Если в поцессе возникает ошибка ...not authorized `name.pdf`,
+нужно изменить или удалить политики imagemsgick.
+
+$ sudo mv /etc/ImageMagick-6/policy.xml /etc/Imagemagick-6/policy.xml.backup
 
 Повернуть изображения на 90 градусов по часовой стрелке:
 $ convert -rotate 90 *.jpg
