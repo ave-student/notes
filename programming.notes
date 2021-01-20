@@ -74,3 +74,57 @@ void PIDregulating (void)
 	}
 }
 
+@@n Mongodb
+@@t db database mongo mongodb
+@@d 20.01.2021
+
+Запуск остановка mongodb сервера:
+
+$ sudo /etc/init.d/mongodb start
+$ sudo /etc/init.d/mongodb stop
+
+Запуск шела mongodb:
+
+$ mongo
+
+Создание БД, переключение в БД:
+
+> use db_name
+
+Создание суперпользователя mongodb:
+
+> use admin
+> db.createUser({user:"admin",pwd:"password",roles:["userAdminAnyDatabase"]})
+
+Создание пользователя с правами на чтение запись БД:
+
+> use db_name
+> db.createUser({user:"user_name",pwd:"password",roles:["readWrite","dbAdmin"]})
+
+Некоторые операции:
+
+> show collections
+> db.createCollection("collection_name")
+> object = {
+	id:"1",
+	name:"common_object",
+	value:"white"
+};
+> db.collection_name.save(object)
+> db.collection_name.find()
+> db.collection_name.drop()
+> dp.dropDatabase()
+
+Утилиты для осуществления копирования БД:
+
+$ mongoexport -d dbname -c collectionname -o file.json
+$ mongoimport -d dbname -c collectionname file.json
+
+Сделать полный дамп БД:
+
+$ mkdir backup && cd backup
+$ mongodump -db dbname
+
+Восстановить БД из дампа:
+$ cd backup
+$ mongorestore
