@@ -1,0 +1,21 @@
+@@n Верстка страницы HTML для вывода на печать
+@@t html page print
+@@d 21.04.2021
+
+Для вставки разрыва страницы добавить блок:
+
+<div class="pagebreak"></div>
+
+Создать стиль:
+
+.pagebreak {
+    page-break-after: always;
+}
+
+Свойства страниц:
+
+@media print {
+    @page {
+        margin: 1cm;
+    }
+}
